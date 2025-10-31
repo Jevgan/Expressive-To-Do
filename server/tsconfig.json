@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",         // Compile to a modern JavaScript version
+    "module": "commonjs",      // Use standard Node.js modules
+    "lib": ["ES2020"],
+    "outDir": "./dist",        // Where to put the compiled .js files
+    "rootDir": "./src",        // Where your .ts source code lives
+    "strict": true,            // Enables all strict type-checking (HIGHLY recommended)
+    "esModuleInterop": true,   // Allows better compatibility with non-TS modules
+    "skipLibCheck": true,      // Speeds up compilation
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*"],     // Only compile files inside the 'src' folder
+  "exclude": ["node_modules"]
+}
