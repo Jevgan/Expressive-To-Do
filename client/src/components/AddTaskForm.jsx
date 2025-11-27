@@ -42,7 +42,7 @@ export const AddTaskForm = ({ onAddTask }) => {
             <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-3 sm:space-y-0">
                 <input
                     type="datetime-local"
-                    value={"2025-10-24T16:53"}
+                    value={dueDate}
                     onChange={(e) => setDueDate(e.target.value)}
                     className="outline-none w-full sm:w-auto flex-grow p-3 border border-gray-300 rounded-md text-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
                 />

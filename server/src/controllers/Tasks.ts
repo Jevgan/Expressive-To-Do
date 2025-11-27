@@ -67,10 +67,6 @@ export const UpdateTask = async (req: Request, res: Response) => {
     res.json(updatedTask);
 }
 
-export const GetTaskById = (req: Request, res: Response) => {
-
-}
-
 export const DeleteTask = async (req: Request, res: Response) => {
     const taskId: number = parseInt(req.params.id);
 
@@ -79,8 +75,8 @@ export const DeleteTask = async (req: Request, res: Response) => {
             id: taskId
         }
     });
-    
-    if(!deletedTask){
+
+    if (!deletedTask) {
         return res.status(404).json({ message: 'Завдання не знайдено. Видалення не завершено.' });
     }
 

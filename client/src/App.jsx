@@ -4,7 +4,6 @@ import { ReminderNotification } from './components/ReminderNotidication'
 import { AddTaskForm } from './components/AddTaskForm'
 import { TaskItem } from './components/TaskItem'
 
-
 const API_URL = "http://localhost:4000/api/tasks";
 
 const api = {
@@ -47,12 +46,11 @@ const api = {
     }
 };
 
-// Головний компонент застосунку
 export default function App() {
     const [tasks, setTasks] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [filter, setFilter] = useState('all'); // 'all', 'active', 'completed', or else
+    const [filter, setFilter] = useState('all'); 
     const [remindingTask, setRemindingTask] = useState(null);
 
     useEffect(() => {
@@ -80,7 +78,7 @@ export default function App() {
                 const now = new Date().getTime();
                 const timeUntilDue = dueTime - now;
 
-                if (timeUntilDue > 0 && timeUntilDue < 2147483647) { // setTimeout limit
+                if (timeUntilDue > 0 && timeUntilDue < 2147483647) {
                     const timer = setTimeout(() => {
                         setRemindingTask(task);
                     }, timeUntilDue);
@@ -92,7 +90,6 @@ export default function App() {
             reminderTimers.forEach(timer => clearTimeout(timer));
         };
     }, [tasks]);
-
 
     const handleAddTask = useCallback(async (taskData) => {
         try {
@@ -138,7 +135,6 @@ export default function App() {
             setTasks(originalTasks);
         }
     }, [tasks]);
-
 
     const filteredTasks = useMemo(() => {
         const sortedTasks = [...tasks].sort((a, b) => (a.completed - b.completed) || new Date(b.dueDate) - new Date(a.dueDate));
@@ -191,7 +187,7 @@ export default function App() {
                         {isLoading ? (
                             <div className="text-center py-8">
                                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-                                <p className="mt-4 text-gray-500">Завантаження завдань...</p>
+                                <p className=" mt-4 text-gray-500"></p>
                             </div>
                         ) : error ? (
                             <div className="text-center py-8 text-red-500 bg-red-50 p-4 rounded-md">

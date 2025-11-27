@@ -1,4 +1,19 @@
+@tailwind components;
 
+@layer components {
+  .loader {
+    color: #0000;
+    -webkit-text-stroke: 1px #000;
+    background: conic-gradient(#000 0 0) 0/1ch 100% no-repeat text;
+    animation: l14 1.5s steps(7, jump-none) infinite alternate;
+  }
+  .loader:before {
+    content: "Loading";
+  }
+  @keyframes l14 {
+    to { background-position: 100% }
+  }
+}
 /* :root { */
 /*   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif; */
 /*   line-height: 1.5; */

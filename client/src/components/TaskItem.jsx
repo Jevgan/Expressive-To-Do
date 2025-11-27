@@ -1,11 +1,10 @@
 import { useState } from 'react'
 
-// Компонент для відображення одного завдання
 export const TaskItem = ({ task, onToggleComplete, onDelete, onUpdate }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editedTitle, setEditedTitle] = useState(task.title);
     const [editedDescription, setEditedDescription] = useState(task.description);
-    const [editedDueDate, setEditedDueDate] = useState(task.dueDate || '');
+    const [editedDueDate, setEditedDueDate] = useState(task.dueDate || "");
 
     const EditIcon = () => (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -23,7 +22,7 @@ export const TaskItem = ({ task, onToggleComplete, onDelete, onUpdate }) => {
         onUpdate(task.id, {
             title: editedTitle,
             description: editedDescription,
-            editedDueDate: editedDueDate || ''
+            dueDate: editedDueDate || ''
         });
         setIsEditing(false);
     };
