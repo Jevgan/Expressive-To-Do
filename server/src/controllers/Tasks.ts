@@ -3,8 +3,15 @@ import { Task } from '../../generated/prisma'
 import prisma from '../utils/db';
 
 export const GetAllTasks = async (req: Request, res: Response) => {
+    const ownerId = req.headers["x-user-id"] as string || "default-user";
+
     console.log('GET /api/tasks - Отримано запит на всі завдання');
-    const tasks: Task[] = await prisma.task.findMany();
+    const tasks: Task[] = await prisma.task.findMany({
+        where: {
+            ownerId: ownerId
+        },
+        orderBy: { id: 'desc' }
+    });
     res.json(tasks);
 }
 
@@ -15,6 +22,7 @@ interface CreateTaskBody {
 }
 
 export const AddTask = async (req: Request, res: Response) => {
+    const ownerId = req.headers["x-user-id"] as string || "default-user";
     const { title, description, dueDate } = req.body as CreateTaskBody;
 
     if (!title) {
@@ -27,7 +35,8 @@ export const AddTask = async (req: Request, res: Response) => {
             title,
             description: description || '',
             dueDate: dueDate ? new Date(dueDate) : null,
-            completed: false
+            completed: false,
+            ownerId: ownerId
         }
     });
 

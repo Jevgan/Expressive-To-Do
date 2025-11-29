@@ -3,34 +3,54 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { ReminderNotification } from './components/ReminderNotidication'
 import { AddTaskForm } from './components/AddTaskForm'
 import { TaskItem } from './components/TaskItem'
+import { getUserId } from './utils/user';
 
-const API_URL = "http://localhost:4000/api/tasks";
+const API_URL = "http://todo-alb-1081288882.eu-north-1.elb.amazonaws.com/api/tasks";
 
 const api = {
     fetchTasks: async () => {
         console.log("API: Отримання завдань...");
-        const response = await fetch(API_URL);
+        const response = await fetch(API_URL, {
+            method: "GET",
+            headers: {
+                "Content-Type" : "application/json",
+                "x-user-id": getUserId(),
+            }
+        });
         if (!response.ok) throw new Error('Не вдалося завантажити завдання');
         return await response.json();
     },
     addTask: async (taskData) => {
         const response = await fetch(API_URL, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                "x-user-id": getUserId(),
+            },
             body: JSON.stringify(taskData),
         });
         if (!response.ok) throw new Error('Не вдалося додати завдання');
         return await response.json();
     },
     fetchOneTask: async (taskId) => {
-        const response = await fetch(`${API_URL}/${taskId}`)
+        const response = await fetch(`${API_URL}/${taskId}`, {
+            method: "GET",
+            headers: {
+                "Content-Type" : "application/json",
+                "x-user-id": getUserId()
+            }
+        })
         if (!response.ok) throw new Error('Такого завдання не знайдено');
         return await response.json();
     },
     updateTask: async (taskId, updates) => {
         const response = await fetch(`${API_URL}/${taskId}`, {
             method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'x-user-id': getUserId(),
+            },
+
             body: JSON.stringify(updates),
         });
         if (!response.ok) throw new Error('Не вдалося оновити завдання');
@@ -40,6 +60,10 @@ const api = {
     deleteTask: async (taskId) => {
         const response = await fetch(`${API_URL}/${taskId}`, {
             method: 'DELETE',
+            headers: {
+                "Content-Type": "application/json",
+                'x-user-id': getUserId(),
+            }
         });
         if (!response.ok) throw new Error('Не вдалося видалити завдання');
         return { success: true };
@@ -50,9 +74,9 @@ export default function App() {
     const [tasks, setTasks] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [filter, setFilter] = useState('all'); 
+    const [filter, setFilter] = useState('all');
     const [remindingTask, setRemindingTask] = useState(null);
-
+    console.log("🔥 CONFIG UPDATE VERIFIED: V3 🔥");
     useEffect(() => {
         const loadTasks = async () => {
             try {
@@ -138,7 +162,7 @@ export default function App() {
 
     const filteredTasks = useMemo(() => {
         const sortedTasks = [...tasks].sort((a, b) => (a.completed - b.completed) || new Date(b.dueDate) - new Date(a.dueDate));
-        if(filter == '' || filter == null) setFilter('all');
+        if (filter == '' || filter == null) setFilter('all');
 
         switch (filter) {
             case 'active':
